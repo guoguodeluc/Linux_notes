@@ -1,0 +1,22 @@
+---
+- name: Set hostname
+  hostname: 
+    name: "{{ set_hostname }}"
+  when: set_hostname is defined
+  
+- name: Debug
+  debug:
+    msg: "{{ inventory_hostname }}"
+
+- name: Setup ansible_hostname
+  setup: 
+    filter: ansible_hostname
+
+- name: Config /etc/hosts
+  template: 
+    src: hosts.j2
+    dest: /etc/hosts
+    owner: root
+    group: root
+    mode: 0644
+    backup: yes

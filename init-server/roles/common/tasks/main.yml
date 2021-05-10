@@ -2,3 +2,7 @@
 # tasks file for common
 
 - include: test.yml
+
+- include: 01.base-config.yml
+#- include_tasks: 01.base-config.yml
+

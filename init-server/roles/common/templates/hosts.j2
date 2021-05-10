@@ -1,0 +1,9 @@
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+
+## BEGIN ANSIBLE BLOCK
+{% for inventory_hostname  in groups['all'] %}
+{{ inventory_hostname }} {{ hostvars[inventory_hostname]['ansible_hostname'] }}
+{% endfor %}
+## END ANSIBLE BLOCK
+
