@@ -1,8 +1,17 @@
 ---
 
 ## 默认变量，需要操作则设置为true，反之则为false
-# common变量
-
+# common变量。motd含义：message of today（布告栏信息）或者message of the day;
+# set_ctrl 来控制(control-alt-delete)组合键来重启服务器，设置为true，组合键不能重启服务器;
 set_hosts: true
 set_users: true
 set_key: true
+set_PS1: true
+set_motd: true
+set_history: true
+set_timezone: true
+set_language: true
+set_ctrl: true
+
+
+PS1_prompt: mytest

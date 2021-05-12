@@ -62,7 +62,76 @@
     - files/id_rsa.pub
   when: set_key == true
   tags: 
-   - key
    - users
+   - key
 
-#- name: 
+- name: Config PS1 prompt
+  template: 
+    src: PS1-prompt.sh.j2
+    dest: /etc/profile.d/PS1-prompt.sh
+    owner: root
+    group: root
+    mode: 0644
+    backup: yes
+  when: set_PS1 == true
+  tags:
+    - env
+    - PS1
+
+- name: Config login prompt
+  template:
+    src: motd.j2
+    dest: /etc/motd
+    owner: root
+    group: root
+    mode: 0644
+    backup: yes
+  when: set_motd == true
+  tags:
+    - env
+    - motd
+
+- name: Config history command
+  template:
+    src:  history-command.sh.j2
+    dest: /etc/profile.d/history-command.sh
+    owner: root
+    group: root
+    mode: 0644
+    backup: yes
+  when: set_history == true
+  tags:
+    - env
+    - history
+
+- name: Config timezone
+  file:
+    src: /usr/share/zoneinfo/Asia/Shanghai
+    dest: /etc/localtime
+    state: link
+    follow: yes
+  when: set_timezone == true
+  tags:
+    - env
+    - timezone
+
+- name: Config language 
+  lineinfile:
+    path: /etc/locale.conf
+    regexp: ^LANG=
+    line: LANG="en_US.UTF-8"
+    state: present
+  when: set_language == true
+  tags: 
+    - env
+    - language
+
+- name: Masked control-alt-delete
+  systemd:
+    name: ctrl-alt-del.target
+    masked: yes
+  ignore_errors: True
+  when: set_ctrl == true
+  tags:
+    - env
+    - ctrl
