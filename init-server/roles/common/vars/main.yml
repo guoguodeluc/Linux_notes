@@ -1,2 +1,17 @@
 ---
 # vars file for common
+
+## 用户账号和密码
+users:
+  - name: user
+    passwd: "123456"
+    shell: /bin/bash
+  - name: ops
+    passwd: "123456"
+    shell: /bin/bash
+
+## 需要配置key登录的变量，以及key的目录文件和选项
+### 这里默认选项是限制key登录禁止端口转发，以及限制登录地址段，这里都是私有网段。
+keyuser: root
+keypath: /tmp/mykey.pub
+keyoptions: 'no-port-forwarding,from="10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,127.0.0.0/8"'

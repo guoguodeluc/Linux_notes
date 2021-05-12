@@ -1,0 +1,8 @@
+---
+
+## 默认变量，需要操作则设置为true，反之则为false
+# common变量
+
+set_hosts: true
+set_users: true
+set_key: true

@@ -1,16 +1,30 @@
 ---
 - name: Set hostname
   hostname: 
-    name: "{{ set_hostname }}"
-  when: set_hostname is defined
-  
-- name: Debug
+    name: "{{ my_hostname }}"
+  when: my_hostname is defined
+  tags:
+    - hosts
+    - hostname
+
+- name: Debug inventory_hostname
   debug:
     msg: "{{ inventory_hostname }}"
+  tags: debug
 
 - name: Setup ansible_hostname
   setup: 
     filter: ansible_hostname
+  tags: 
+    - hosts
+    - hostname
+
+- name: Debug ansible_hostname
+  debug:
+   msg: "{{ ansible_hostname }}"
+  tags: 
+   - debug
+   - hostname
 
 - name: Config /etc/hosts
   template: 
@@ -20,3 +34,35 @@
     group: root
     mode: 0644
     backup: yes
+  when: set_hosts == true
+  tags: 
+    - hosts
+
+- name: Add operation and maintenance user
+  user:
+    name: "{{ item.name }}"
+    password: "{{ item.passwd | password_hash('sha512') }}"
+    shell: "{{ item.shell }}"
+    state: present
+    create_home: true
+  loop: "{{ users }}"
+  when: set_users == true
+  tags: 
+    - users
+
+- name: Add root authorized_keys
+  authorized_key:
+    user: "{{ keyuser}}"
+    key: "{{ lookup('file', item ) }}"
+    key_options: "{{ keyoptions }}"
+    state: present
+  with_first_found:
+    - "{{ keypath }}"
+    - ~/.ssh/id_rsa.pub
+    - files/id_rsa.pub
+  when: set_key == true
+  tags: 
+   - key
+   - users
+
+#- name: 
