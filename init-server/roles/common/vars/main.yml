@@ -4,10 +4,10 @@
 ## 用户账号和密码
 users:
   - name: user
-    passwd: "123456"
+    passwd: "A123456"
     shell: /bin/bash
   - name: ops
-    passwd: "123456"
+    passwd: "A123456"
     shell: /bin/bash
 
 ## 需要配置key登录的变量，以及key的目录文件和选项
