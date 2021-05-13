@@ -1,9 +1,0 @@
-[all:children]
-test1
-
-[test1]
-192.168.88.114
-
-[all:vars]
-ansible_ssh_user=root
-ansible_ssh_pass=123456
