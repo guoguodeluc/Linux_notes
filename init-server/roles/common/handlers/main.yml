@@ -1,2 +1,12 @@
 ---
 # handlers file for common
+
+- name: restart sshd
+  systemd:
+    name: sshd.service
+    state: restarted
+
+- name: restart rsyslog
+  systemd:
+    name: rsyslog.service
+    state: restarted

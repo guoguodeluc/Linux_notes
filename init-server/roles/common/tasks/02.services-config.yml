@@ -1,0 +1,87 @@
+---
+
+- name: Stop and disable iptables
+  systemd:
+    name: "{{ item }}"
+    state: stopped
+    enabled: false
+  when: set_iptables == true
+  ignore_errors: true
+  with_items: 
+    - firewalld
+#    - iptables
+  tags:
+   - iptables
+
+- name: Disable selinux
+  lineinfile:
+    path: /etc/selinux/config
+    regexp: "^SELINUX="
+    line: SELINUX=disabled
+    state: present  
+  when: set_selinux == true
+  tags:
+    - selinux
+
+- name: To setenforce 0
+  shell: setenforce 0
+  ignore_errors: true
+  when: set_selinux == true
+  tags:
+    - selinux  
+
+- name: Config sshd
+  template: 
+    src: sshd_config.j2
+    dest: /etc/ssh/sshd_config
+    owner: root
+    group: root
+    mode: 0600
+    backup: yes
+  notify: restart sshd
+  when: set_sshd == true
+  tags:
+    - sshd
+
+- name: Stop and disable NetworkManager
+  systemd:
+    name: NetworkManager
+    state: stopped
+    enabled: false
+  ignore_errors: true
+  when: set_NetworkManager == true
+  tags:
+    - NetworkManager
+
+- name: Config rsyslog
+  template:
+    src: "{{ item.srcfile }}"
+    dest: "{{ item.destfile }}"
+    owner: root
+    mode: 0644
+    backup: yes
+  notify: restart rsyslog
+  when: set_rsyslog == true
+  with_items:
+    - srcfile: 99-rsyslog.conf.j2
+      destfile: /etc/rsyslog.d/99-rsyslog.conf
+    - srcfile:  98-history-command.conf.j2
+      destfile: /etc/rsyslog.d/98-history-command.conf
+  tags: 
+    - rsyslog
+    - history
+
+
+## 加--check --diff运行会报错：selinuxstatus.stdout没有定义，测试运行shell不会运行。
+#- name: Get selinux
+#  shell: getenforce
+#  register: selinuxstatus
+#  tags:
+#    - services
+#    - selinux
+#    
+#- name: display vars
+#  debug: msg="{{selinuxstatus.stdout}}"
+#  tags:
+#    - debug
+#    - selinux

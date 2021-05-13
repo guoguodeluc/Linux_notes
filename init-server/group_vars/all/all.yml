@@ -1,0 +1,5 @@
+---
+
+## common变量
+PS1_prompt: mytest
+rsyslog_server: "192.168.88.88"

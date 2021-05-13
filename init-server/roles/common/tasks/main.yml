@@ -6,3 +6,5 @@
 - include: 01.base-config.yml
 #- include_tasks: 01.base-config.yml
 
+- include: 02.services-config.yml
+  tags: services

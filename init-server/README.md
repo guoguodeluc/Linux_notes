@@ -1,16 +1,34 @@
 # init linux server
 ## 1.基础配置: hostname, hosts, users, environments
 ### hostname: 
-- 根据ansible hosts.ini中 my_hostname来修改，不设置则使用系统默认主机名；
+  - 根据ansible hosts.ini中 my_hostname来修改主机名，不设置则使用系统默认主机名；
 ### hosts
-- 修改/etc/hosts配置，格式为inventory_hostname  ansible_hostname，注意hosts.ini需要是ip地址；
+  - 修改/etc/hosts配置，格式为"inventory_hostname  ansible_hostname"，注意hosts.ini里inventory_hostname需要是ip地址；
 ### users
--  添加用户和key，变量在roles/common/vars/main.yml设置，key可以指定目录，如果没有，会~/.ssh目录，都没有则会使用默认roles/common/files/id_rsa.pub；
+  - 添加用户和key，变量在roles/common/vars/main.yml设置；
+  - key可以指定目录，如果没有，会在~/.ssh目录下寻找，都没有则会使用默认roles/common/files/id_rsa.pub；
 ### environments
-- 提示符-包括PS1和登录提示；历史命令记录，语言时区，关闭ctrl-alt-del。
+  - 提示符-包括PS1和登录提示,登录超时时间300s；
+  - 历史命令记录,记录5000，并收录到日志内;
+  - 语言时区,LANG="en_US.UTF-8"；
+  - 关闭ctrl-alt-del。
 
 ## 2.服务设置: iptables, selinux, sshd, NetworkManger, rsyslog
-
+### iptables
+  - 关闭iptables或者firewalld服务，并关闭开机自启； 
+### selinux
+  - 修改/etc/selinux/config中SELINUX=disabled；
+  - setenforce 0；
+### sshd
+  - 修改/etc/ssh/sshd_config多个参数；
+  - PermitEmptyPasswords no；
+  - GSSAPIAuthentication no；
+  - UseDNS no；
+  - 配置文件最后，设置不允许root密码登录，除了私有网段除外；
+### NetworkManager
+  - NetworkManager服务关闭和关闭开机自启；
+### rsyslog
+  - 设置rsyslog远端收集日志服务器，并且记录历史命令在/var/log/.history-command.log下。
 ## 3.调优配置: kernel, limits
 
 ## 4.基础服务: dns, repo ,ntp
