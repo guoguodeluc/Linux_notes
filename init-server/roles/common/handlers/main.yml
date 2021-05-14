@@ -10,3 +10,8 @@
   systemd:
     name: rsyslog.service
     state: restarted
+
+- name: restart chronyd
+  systemd:
+    name: chronyd.service
+    state: restarted

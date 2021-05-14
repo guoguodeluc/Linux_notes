@@ -20,3 +20,12 @@ set_selinux: true
 set_sshd: true
 set_NetworkManager: true
 set_rsyslog: true
+
+# 03.optimize-config.yml
+set_sysctl: true
+set_limits: true
+
+# 04.public-services.yml
+set_dns: true
+set_copy_repo: true
+set_ntp: true

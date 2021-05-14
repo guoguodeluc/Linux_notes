@@ -8,3 +8,9 @@
 
 - include: 02.services-config.yml
   tags: services
+
+- include: 03.optimize-config.yml
+  tags: optimize
+
+- include: 04.public-services.yml
+  tags: public

@@ -1,0 +1,57 @@
+---
+
+- name: Config DNS
+  template:
+    src: resolv.conf.j2
+    dest: /etc/resolv.conf
+    owner: root
+    group: root
+    mode: 0644
+    backup: yes
+  when: set_dns == true
+  tags:
+    - dns
+
+- name: Find  repo files
+  find:
+    paths: /etc/yum.repos.d
+    patterns: '*.repo'
+  register: repofiles
+- name: Rmove repo files
+  file:
+    path: "{{ item.path }}"
+    state: absent
+  with_items:
+    - "{{ repofiles.files }}"  
+
+- name: Copy repo files
+  template:
+    src: "{{ item }}"
+    dest: "/etc/yum.repos.d/{{ item }}"
+  when: set_copy_repo == true
+  tags:
+    - copy_repo
+  with_items:
+    - Centos-7-aliyun.repo
+    - epel-7-aliyun.repo
+
+- name: Install chronyd
+  yum:
+    name: chrony
+    state: present
+  when: set_ntp == true
+  tags: 
+    - ntp
+
+- name: Config ntp
+  template:
+    src: chrony.conf.j2
+    dest: /etc/chrony.conf
+    owner: root
+    group: root
+    mode: 0644
+    backup: yes
+  notify: restart chronyd
+  when: set_ntp == true
+  tags:
+    - ntp

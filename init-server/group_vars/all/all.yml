@@ -3,3 +3,7 @@
 ## common变量
 PS1_prompt: mytest
 rsyslog_server: "192.168.88.88"
+
+dns_domain: localdomain
+dns_servers: [ '192.168.88.2', "8.8.8.8"]
+ntp_servers: [ '192.168.88.2', 'ntp.aliyun.com']
