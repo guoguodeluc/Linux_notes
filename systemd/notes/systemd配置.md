@@ -1,13 +1,14 @@
 # systemd配置
 详细说明见
 `man 5 systemd.service`
+
 https://www.ruanyifeng.com/blog/2016/03/systemd-tutorial-part-two.html
 
 ## 查看配置方式
-`
+```
 # systemctl cat sshd 
 # cat /usr/lib/systemd/system/sshd.service 
-`
+```
 
 ## [Unit]区域
 启动顺序和依赖关系
