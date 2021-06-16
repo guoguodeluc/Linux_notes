@@ -2,11 +2,10 @@
 
 详细说明见
 ` # man 5 systemd.unit `
-       Table 1.  Load path when running in system mode (--system).
-       │Path                    │ Description                 │
-       │/etc/systemd/system     │ Local configuration         │
-       │/run/systemd/system     │ Runtime units               │
-       │/usr/lib/systemd/system │ Units of installed packages │
+
+>       │/etc/systemd/system     │ Local configuration        
+>       │/run/systemd/system     │ Runtime units               │
+>       │/usr/lib/systemd/system │ Units of installed packages │
 这三个目录的配置文件优先级依次从高到低，如果同一选项三个地方都配置了，优先级高的会覆盖优先级低的。
 
 ## /etc/systemd/system/(系统管理员安装的单元, 优先级更高)
