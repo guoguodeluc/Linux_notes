@@ -1,7 +1,7 @@
 # systemd配置
 详细说明见
 `man 5 systemd.service`
-
+https://www.freedesktop.org/software/systemd/man/bootup.html#System%20Manager%20Bootup
 https://www.ruanyifeng.com/blog/2016/03/systemd-tutorial-part-two.html
 
 ## 查看配置方式
@@ -9,6 +9,12 @@ https://www.ruanyifeng.com/blog/2016/03/systemd-tutorial-part-two.html
 # systemctl cat sshd 
 # cat /usr/lib/systemd/system/sshd.service 
 ```
+
+## 重新加载配置
+```
+# systemctl daemon-reload
+```
+
 
 ## [Unit]区域
 启动顺序和依赖关系
@@ -40,6 +46,26 @@ ExecStartPre字段：启动服务之前执行的命令
 ExecStartPost字段：启动服务之后执行的命令
 ExecStopPost字段：停止服务之后执行的命令
 
+KillMode字段：定义 Systemd 如何停止服务
 
+- control-group（默认值）：当前控制组里面的所有子进程，都会被杀掉
+- process：只杀主进程
+- mixed：主进程将收到 SIGTERM 信号，子进程收到 SIGKILL 信号
+- none：没有进程会被杀掉，只是执行服务的 stop 命令。
+
+Restart字段：定义了服务退出后，Systemd 的重启方式
+- no（默认值）：退出后不会重启
+- on-success：只有正常退出时（退出状态码为0），才会重启
+- on-failure：非正常退出时（退出状态码非0），包括被信号终止和超时，才会重启
+- on-abnormal：只有被信号终止和超时，才会重启
+- on-abort：只有在收到没有捕捉到的信号终止时，才会重启
+- on-watchdog：超时退出，才会重启
+- always：不管是什么退出原因，总是重启
+
+RestartSec字段：表示 Systemd 重启服务之前，需要等待的秒数。
+
+
+## [Install]区域
+WantedBy字段：表示该服务所在的 Target，正常设置multi-user.target即可；
 
 
